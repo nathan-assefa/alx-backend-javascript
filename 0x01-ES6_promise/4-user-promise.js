@@ -1,8 +1,8 @@
-export default function signUpUser(firstName, lastName) {
+export default function signUpUser (firstName, lastName) {
   return Promise.resolve({
     firstName,
     lastName
-  })
+  });
 }
 
 // but why promise.resolve? why not 'new promise((resolve, reject) => {resolve(...)})?
