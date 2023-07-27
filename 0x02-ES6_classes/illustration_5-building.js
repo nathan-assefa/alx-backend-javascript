@@ -60,3 +60,20 @@ So, to summarize:
  the constructor property of that object points to the constructor
  function that was used to create the object.
  ****/
+
+
+/**** what is the use of 'Symbol.toStringTag' in javascripit?
+ The Symbol.toStringTag is a well-known symbol in JavaScript that is used
+ to customize the string representation of an object. By defining a getter
+ for this property, we can control what string value is returned when the
+ object is converted to a string.
+
+ It is used in conjunction with the Object.prototype.toString() method, which
+ is automatically called when you try to convert an object to a string (e.g., using console.log()).
+
+ By default, the Object.prototype.toString() method returns a string in the format
+ [object Object], which doesn't provide meaningful information about the object.
+
+ By defining a getter for Symbol.toStringTag in a class, you can customize the
+ string representation of instances of that class when they are converted to a string.
+ ****/
