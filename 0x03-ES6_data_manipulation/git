@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+git add .
+git commit -m 'data_manipulation'
+git push
