@@ -9,7 +9,7 @@ function countStudents(fileName) {
     const fileContents = fs.readFileSync(fileName, 'utf-8');
     const lines = fileContents.trim().split('\n');
 
-    for (const line of lines) {
+    for (const line of lines.slice(0, -1)) {
       if (line) {
         totalStudents++;
 
