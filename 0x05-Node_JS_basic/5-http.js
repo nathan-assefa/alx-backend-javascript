@@ -55,7 +55,7 @@ const app = http.createServer((request, response) => {
   }
   if (request.url === '/students') {
     response.write('This is the list of our students\n');
-    countStudents(process.argv[2].toString()).then((output) => {
+    countStudents(process.argv[2]).then((output) => {
       const outString = output.slice(0, -1);
       response.end(outString);
     }).catch(() => {
