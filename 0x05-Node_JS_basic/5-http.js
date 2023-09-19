@@ -71,9 +71,10 @@ const app = http.createServer((request, response) => {
   }
 });
 
-// Listen on port 1245
+const hostname = '127.0.0.1';
 const port = 1245;
-app.listen(port, () => {
+
+app.listen(port, hostname, () => {
 });
 
 // Export the app
