@@ -65,9 +65,6 @@ const app = http.createServer((request, response) => {
         response.statusCode = 404;
         response.end('Cannot load the database');
       });
-  } else {
-    response.statusCode = 404;
-    response.end('Not Found');
   }
 });
 
