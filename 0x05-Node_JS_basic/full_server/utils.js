@@ -5,7 +5,7 @@ const readDatabase = async (filePath) => {
   const readFilePromise = promisify(readFile);
 
   const data = await readFilePromise(filePath, 'utf-8');
-  const lines = data.toString().split('\n');
+  const lines = data.split('\n');
   const students = {};
 
   const noHeader = lines.slice(1);
