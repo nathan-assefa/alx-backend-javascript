@@ -1,14 +1,14 @@
 const fs = require('fs');
 
-function countStudents(path) {
+function countStudents (path) {
   try {
     // Read the database file synchronously
     const data = fs.readFileSync(path, 'utf8');
-    console.log('data: ', data)
+    console.log('data: ', data);
 
     // Split the CSV data into lines
     const lines = data.split('\n').filter(Boolean); // Remove empty lines
-	  console.log('lines: ', lines)
+	  console.log('lines: ', lines);
 
     // Initialize an object to store student counts by field
     const fieldCounts = {};
@@ -20,13 +20,13 @@ function countStudents(path) {
         const [, , , field] = line.split(',');
         if (field) {
           if (fieldCounts[field]) {
-	    console.log('fieldcount: ', fieldCounts[field])
+	    console.log('fieldcount: ', fieldCounts[field]);
             fieldCounts[field].count++;
             fieldCounts[field].students.push(line.split(',')[0]);
           } else {
             fieldCounts[field] = {
               count: 1,
-              students: [line.split(',')[0]],
+              students: [line.split(',')[0]]
             };
           }
         }
