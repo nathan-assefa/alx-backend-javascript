@@ -25,4 +25,4 @@ const readDatabase = (filePath) => {
   });
 };
 
-module.exports = readDatabase
+module.exports = readDatabase;
