@@ -48,8 +48,8 @@ async function countStudents (filePath) {
   }
 }
 
-// Create an HTTP server
-const server = http.createServer((request, response) => {
+// Create an HTTP app
+const app = http.createServer((request, response) => {
   response.statusCode = 200;
   response.setHeader('Content-Type', 'text/plain');
 
@@ -73,8 +73,8 @@ const server = http.createServer((request, response) => {
 
 // Listen on port 1245
 const port = 1245;
-server.listen(port, () => {
+app.listen(port, () => {
 });
 
 // Export the app
-module.exports = server;
+module.exports = app;
