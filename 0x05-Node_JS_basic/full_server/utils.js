@@ -9,13 +9,13 @@ const readDatabase = async (filePath) => {
   const students = {};
 
   const noHeader = lines.slice(1);
-  for (let i = 0; i < noHeader.length; i += 1) {
-    if (noHeader[i]) {
-      const field = noHeader[i].toString().split(',');
-      if (Object.prototype.hasOwnProperty.call(students, field[3])) {
-        students[field[3]].push(field[0]);
-      } else {
-        students[field[3]] = [field[0]];
+  for (const line of noHeader) {
+    if (line) {
+      const [, firstName, , field] = line.split(',').map((value) => value.trim());
+
+      if (field) {
+        students[field] = students[field] || []; // Initialize an array if it doesn't exist
+        students[field].push(firstName);
       }
     }
   }
