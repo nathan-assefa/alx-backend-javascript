@@ -14,7 +14,6 @@ app.get('/students', (request, response) => {
   });
 });
 
-
 // Function to count students from the database file
 async function countStudents (filePath) {
   try {
