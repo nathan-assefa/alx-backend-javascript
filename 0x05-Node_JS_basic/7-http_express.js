@@ -3,25 +3,17 @@ const fs = require('fs').promises;
 
 const app = express();
 
-// Define a route for the root endpoint '/'
-app.get('/', (req, res) => {
-  res.send('Hello Holberton School!');
+app.get('/', (request, response) => {
+  response.send('Hello Holberton School!');
+});
+app.get('/students', (request, response) => {
+  countStudents(process.argv[2].toString()).then((output) => {
+    response.send(['This is the list of our students', output].join('\n'));
+  }).catch(() => {
+    response.send('This is the list of our students\nCannot load the database');
+  });
 });
 
-// Define a route for the '/students' endpoint
-app.get('/students', async (req, res) => {
-  try {
-    const databaseFilePath = process.argv[2];
-    const data = await countStudents(databaseFilePath);
-
-    // Send the data as plain text response
-    res.set('Content-Type', 'text/plain');
-    res.send(data.slice(0, -1));
-  } catch (error) {
-    // Handle errors
-    res.status(404).send('Cannot load the database');
-  }
-});
 
 // Function to count students from the database file
 async function countStudents (filePath) {
