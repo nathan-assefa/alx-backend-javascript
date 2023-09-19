@@ -1,71 +1,80 @@
 const http = require('http');
+const fs = require('fs').promises;
 
-const { readFile } = require('fs');
+// Define the countStudents function
+async function countStudents (filePath) {
+  try {
+    const fileContents = await fs.readFile(filePath, 'utf-8');
+    const lines = fileContents.trim().split('\n');
 
-const hostname = '127.0.0.1';
-const port = 1245;
+    // Initialize data structures to store counts and student names
+    const fieldCounts = {};
+    let totalStudents = 0;
 
-function countStudents (fileName) {
-  const students = {};
-  const fields = {};
-  let length = 0;
-  return new Promise((resolve, reject) => {
-    readFile(fileName, (err, data) => {
-      if (err) {
-        reject(err);
-      } else {
-        let output = '';
-        const lines = data.toString().split('\n');
-        for (let i = 0; i < lines.length; i += 1) {
-          if (lines[i]) {
-            length += 1;
-            const field = lines[i].toString().split(',');
-            if (Object.prototype.hasOwnProperty.call(students, field[3])) {
-              students[field[3]].push(field[0]);
-            } else {
-              students[field[3]] = [field[0]];
-            }
-            if (Object.prototype.hasOwnProperty.call(fields, field[3])) {
-              fields[field[3]] += 1;
-            } else {
-              fields[field[3]] = 1;
-            }
-          }
+    // Process each line of the file
+    for (const line of lines.slice(1)) {
+      const [, , , field] = line.split(',');
+      if (field) {
+        totalStudents++;
+
+        if (fieldCounts[field]) {
+          fieldCounts[field].count++;
+          fieldCounts[field].students.push(line.split(',')[0]);
+        } else {
+          fieldCounts[field] = {
+            count: 1,
+            students: [line.split(',')[0]]
+          };
         }
-        const l = length - 1;
-        output += `Number of students: ${l}\n`;
-        for (const [key, value] of Object.entries(fields)) {
-          if (key !== 'field') {
-            output += `Number of students in ${key}: ${value}. `;
-            output += `List: ${students[key].join(', ')}\n`;
-          }
-        }
-        resolve(output);
       }
-    });
-  });
+    }
+
+    // Prepare the result string
+    const resultString = [];
+    resultString.push(`Number of students: ${totalStudents}`);
+
+    // Add the number of students in each field to the result
+    for (const field in fieldCounts) {
+      if (field !== 'field') {
+        const studentList = fieldCounts[field].students.join(', ');
+        resultString.push(`Number of students in ${field}: ${fieldCounts[field].count}. List: ${studentList}`);
+      }
+    }
+
+    // Join the lines of the result string
+    return resultString.join('\n');
+  } catch (error) {
+    throw new Error('Cannot load the database');
+  }
 }
 
-const app = http.createServer((request, response) => {
+// Create an HTTP server
+const server = http.createServer((request, response) => {
   response.statusCode = 200;
   response.setHeader('Content-Type', 'text/plain');
+
   if (request.url === '/') {
-    response.write('Hello Holberton School!');
-    response.end();
-  }
-  if (request.url === '/students') {
+    response.end('Hello Holberton School!\n');
+  } else if (request.url === '/students') {
     response.write('This is the list of our students\n');
-    countStudents(process.argv[2]).then((output) => {
-      const outString = output.slice(0, -1);
-      response.end(outString);
-    }).catch(() => {
-      response.statusCode = 404;
-      response.end('Cannot load the database');
-    });
+    countStudents(process.argv[2])
+      .then((output) => {
+        response.end(output);
+      })
+      .catch(() => {
+        response.statusCode = 404;
+        response.end('Cannot load the database');
+      });
+  } else {
+    response.statusCode = 404;
+    response.end('Not Found');
   }
 });
 
-app.listen(port, hostname, () => {
+// Listen on port 1245
+const port = 1245;
+server.listen(port, () => {
 });
 
-module.exports = app;
+// Export the app
+module.exports = server;
