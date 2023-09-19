@@ -13,7 +13,7 @@ function countStudents(fileName) {
       if (line) {
         totalStudents++;
 
-        const [, firstName, , field] = line.split(',');
+        const [firstName, , , field] = line.split(',');
 
         // Update student counts by field
         if (!studentCountsByField[field]) {
