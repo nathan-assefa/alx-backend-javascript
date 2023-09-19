@@ -1,17 +1,13 @@
 const express = require('express');
 
-// Create an Express application
 const app = express();
+const port = 1245;
 
-// Define a route for the root endpoint '/'
-app.get('/', (req, res) => {
-  res.send('Hello Holberton School!\n');
+app.get('/', (request, response) => {
+  response.send('Hello Holberton School!');
 });
 
-// Listen on port 1245
-const port = 1245;
 app.listen(port, () => {
 });
 
-// Export the Express app
 module.exports = app;
