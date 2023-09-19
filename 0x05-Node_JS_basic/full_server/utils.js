@@ -11,7 +11,7 @@ const readDatabase = async (filePath) => {
   const noHeader = lines.slice(1);
   for (const line of noHeader) {
     if (line) {
-      const [, firstName, , field] = line.split(',').map((value) => value.trim());
+      const [firstName, , , field] = line.split(',').map((value) => value.trim());
 
       if (field) {
         students[field] = students[field] || []; // Initialize an array if it doesn't exist
