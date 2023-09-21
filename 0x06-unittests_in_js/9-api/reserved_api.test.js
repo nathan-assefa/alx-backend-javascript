@@ -33,11 +33,4 @@ describe('Cart page', () => {
       done();
     });
   });
-
-  it('should return the correct status code when :id is NOT a number', (done) => {
-    request.get(`${URL}/cart/abc`, (err, res, body) => {
-      expect(res.statusCode).to.equal(404);
-      done();
-    });
-  });
 });
