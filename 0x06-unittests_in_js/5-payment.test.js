@@ -1,7 +1,6 @@
 const { describe, it, beforeEach, afterEach } = require('mocha');
 const sinon = require('sinon');
 const sendPaymentRequestToApi = require('./5-payment');
-const Utils = require('./utils');
 const assert = require('assert');
 
 describe('sendPaymentRequestToApi', function () {
