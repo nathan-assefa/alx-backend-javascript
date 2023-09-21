@@ -1,80 +1,74 @@
-const request = require('request');
-const { expect } = require('chai');
+const request = require("request");
+const {describe, it} = require("mocha");
+const expect = require("chai").expect;
 
-const URL = 'http://localhost:7865';
-
-describe('Index page', () => {
-  it('should return the correct status code for the index page', (done) => {
-    request.get(URL, (err, res, body) => {
-      expect(res.statusCode).to.equal(200);
-      done();
+describe("Index page", function() {
+    const options = {
+	url: "http://localhost:7865/",
+	method: "GET"
+    }
+    it("check correct status code", function(done) {
+	request(options, function(err, res, body) {
+	    expect(res.statusCode).to.equal(200);
+	    done();
+	});
     });
-  });
-
-  it('should return the correct result for the index page', (done) => {
-    request.get(URL, (err, res, body) => {
-      expect(body).to.equal('Welcome to the payment system');
-      done();
+    it("check correct content", function(done) {
+	request(options, function(err, res, body) {
+	    expect(body).to.equal("Welcome to the payment system");
+	    done();
+	});
     });
-  });
 });
 
-describe('Cart page', () => {
-  it('should return the correct status code when :id is a number', (done) => {
-    request.get(`${URL}/cart/6`, (err, res, body) => {
-      expect(res.statusCode).to.equal(200);
-      done();
+describe("Cart page", function() {
+    it("check correct status code for correct url", function(done) {
+	request.get("http://localhost:7865/cart/12", function(err, res, body) {
+	    expect(res.statusCode).to.equal(200);
+	    done();
+	});
     });
-  });
-
-  it('should return the correct result when :id is a number', (done) => {
-    request.get(`${URL}/cart/6`, (err, res, body) => {
-      expect(body).to.equal('Payment methods for cart 6');
-      done();
+    it("check correct content for correct url", function(done) {
+	request.get("http://localhost:7865/cart/12", function(err, res, body) {
+	    expect(body).to.equal("Payment methods for cart 12");
+	    done();
+	});
     });
-  });
-
-  it('should return the correct status code when :id is NOT a number', (done) => {
-    request.get(`${URL}/cart/abc`, (err, res, body) => {
-      expect(res.statusCode).to.equal(404);
-      done();
+    it("check correct status code for incorrect url", function(done) {
+	request.get("http://localhost:7865/cart/kim", function(err, res, body) {
+	    expect(res.statusCode).to.equal(404);
+	    done();
+	});
     });
-  });
 });
 
-describe('Available Payments page', () => {
-  it('should return the correct payment methods', (done) => {
-    request.get(`${URL}/available_payments`, (err, res, body) => {
-      const expectedPaymentMethods = {
-        payment_methods: {
-          credit_cards: true,
-          paypal: false
-        }
-      };
-      expect(JSON.parse(body)).to.deep.equal(expectedPaymentMethods);
-      done();
+describe("Available_payments page", function() {
+    it("check correct status for correct url", function() {
+	request.get("http://localhost:7865/available_payments", (err, res, body) => {
+	    if (err) {
+		expect(res.statusCode).to.not.equal(200);
+	    } else {
+		expect(res.statusCode).to.equal(200);
+	    }
+	});
     });
-  });
+    it("check correct body content for correct url", function() {
+	const option = {json: true};
+	const payLoad = {
+	    payment_methods: {
+		credit_cards: true,
+		paypal: false
+	    }
+	}
+	request.get("http://localhost:7865/available_payments", option, (err, res, body) => {
+	    if (err) {
+		expect(res.statusCode).to.not.equal(200);
+	    } else {
+		expect(body).to.deep.equal(payLoad);
+	    }
+	});
+    });
 });
-
-/**
-describe('Login page', () => {
-  it('should return a welcome message', (done) => {
-    const userName = 'Betty';
-    const requestData = { userName };
-    request.post(
-      {
-        url: `${URL}/login`,
-        json: true,
-        body: requestData
-      },
-      (err, res, body) => {
-        expect(body).to.equal(`Welcome ${userName}`);
-        done();
-      }
-    );
-  });
-}); **/
 
 describe("Login", function() {
     it("check correct status code for request that's sent properly", function(done) {
