@@ -10,18 +10,18 @@ app.get('/', (request, response) => {
 });
 
 app.get('/cart/:id([0-9]+)', (request, response) => {
-  response.send(`Payment methods for cart ${request.params.id}`);
+    response.send(`Payment methods for cart ${request.params.id}`);
 });
 
 app.get('/available_payments', (request, response) => {
-  response.set('Content-Type', 'application/json');
-  const payMethods = {
-    payment_methods: {
-      credit_cards: true,
-      paypal: false
+    response.set("Content-Type", "application/json");
+    const payMethods = {
+	payment_methods: {
+          credit_cards: true,
+          paypal: false
+	}
     }
-  };
-  response.send(payMethods);
+    response.send(payMethods);
 });
 
 app.post('/login', (req, res) => {
@@ -33,8 +33,9 @@ app.post('/login', (req, res) => {
   }
 });
 
+
 app.listen(port, () => {
-  console.log(`API available on localhost port ${port}`);
+    console.log(`API available on localhost port ${port}`);
 });
 
 module.exports = app;
